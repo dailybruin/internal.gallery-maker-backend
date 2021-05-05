@@ -1,4 +1,9 @@
-from .serializers import GallerySerializer, ImageSerializer, MainSiteGallerySerializer
+from .serializers import (
+    GallerySerializer,
+    ImageSerializer,
+    MainSiteGallerySerializer,
+    GalleryTextFieldSerializer
+)
 from .models import Gallery, Image
 from .pagination import GalleryPagination
 from rest_framework import viewsets, generics
@@ -40,11 +45,22 @@ def create_or_update_gallery(request):
     # Error checking
     if "name" not in data or "description" not in data or "layout" not in data:
         return JsonResponse({"response": "Name, description, or layout does not exist."}, status=400)
-    if "images" not in data:
-        return JsonResponse({"response": "Images does not exist."}, status=400)
-    for index, image in enumerate(data["images"]):
-        if "caption" not in image or "url" not in image or "credits" not in image:
-            return JsonResponse({"response": "Caption or image url does not exist."}, status=400)
+    if "data" not in data:
+        return JsonResponse({"response": "Data does not exist."}, status=400)
+    for index, item in enumerate(data["data"]):
+        if "metatype" not in item:
+            return JsonResponse({
+                "response": f"Data object at index {index} has no 'metatype' field"
+                }, status=400)
+        if item["metatype"] == "image":
+            required_fields = ["caption", "url", "credits", "type"]
+        elif item["metatype"] == "text":
+            required_fields = ["content"]
+        for field in required_fields:
+            if field not in item:
+                return JsonResponse({
+                    "response": f"Required field '{field}' does not exist in data object at index {index}"
+                }, status=400)
 
     gallery_serializer = None
     if id_exists is None:
@@ -56,9 +72,10 @@ def create_or_update_gallery(request):
         if len(referenced_gallery) == 0:
             return JsonResponse({"response": "Gallery does not exist."}, status=400)
 
-        # delete old images
+        # delete old images and text fields
         actual_gallery_obj = Gallery.objects.get(id=id)
         actual_gallery_obj.images.all().delete()
+        actual_gallery_obj.textfields.all().delete()
 
         # make serializer for updating existing gallery
         gallery_serializer = GallerySerializer(actual_gallery_obj, data={"name": data["name"], "description": data["description"], "layout": data["layout"]})
@@ -70,26 +87,29 @@ def create_or_update_gallery(request):
         return JsonResponse(gallery_serializer.errors, status=400)
     id = gallery.id
 
-    # create images. If gallery alraedy existed, then the images were deleted earlier
-    for index, image in enumerate(data["images"]):
-        image.update({"gallery": id, "index": index})
-        image["img_url"] = image.pop("url")
-        image["description"] = image.pop("caption")
-        image_serializer_class = ImageSerializer(data=image)
-        if image_serializer_class.is_valid():
-            image_serializer_class.save()
+    # Create images and textfields.
+    # If gallery already existed, then images and text deleted earlier
+    for index, item in enumerate(data["data"]):
+        item.update({"gallery": id, "index": index})
+        if item["metatype"] == "image":
+            item["img_url"] = item.pop("url")
+            item["description"] = item.pop("caption")
+            serializer_class = ImageSerializer(data=item)
         else:
-            return JsonResponse(image_serializer_class.errors, status=400)
+            serializer_class = GalleryTextFieldSerializer(data=item)
+
+        if serializer_class.is_valid():
+            serializer_class.save()
+        else:
+            return JsonResponse(serializer_class.errors, status=400)
+
+
     return JsonResponse(data)
         # {
         #     name:
         #     description:
         #     alt..
-        #     images: []
+        #     data: []
         # }
         # create gallery first, get id, then create many image objects with that gallery object id
         # 
-
-# urlpatterns = [
-#     url(r'^$', schema_view)
-# ]

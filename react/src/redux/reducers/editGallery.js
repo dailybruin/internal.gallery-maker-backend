@@ -1,3 +1,5 @@
+import { galleryOptions } from 'constants/galleryLayouts';
+
 const initialState = {
   gallery: [],
   name: '',
@@ -51,15 +53,20 @@ const editGallery = (state = initialState, action) => {
       };
     }
     case 'EDIT_LAYOUT': {
+      let newGallery = state.gallery.map((img) => ({
+        ...img,
+        type: galleryOptions[action.payload][0]
+      }))
       return {
         ...state,
+        gallery: newGallery,
         layout: action.payload,
       };
     }
     case 'EDIT_CAPTION': {
       // payload: {url: blah, newCaption: stuff}
       let newGallery = state.gallery.map((img) => {
-        if (img.url == action.payload.url)
+        if (img.url === action.payload.url)
           return {
             ...img,
             caption: action.payload.newCaption,
@@ -76,7 +83,7 @@ const editGallery = (state = initialState, action) => {
       // payload: {url: blah, newCredit: stuff}
       // url identifies which image we are editing
       let newGallery = state.gallery.map((img) => {
-        if (img.url == action.payload.url)
+        if (img.url === action.payload.url)
           return {
             ...img,
             credits: action.payload.newCredit,
@@ -89,40 +96,24 @@ const editGallery = (state = initialState, action) => {
         gallery: newGallery,
       };
     }
-    case 'CREATE_TEXTBOX': {
-      //payload: {index: number}
-      let newGallery = state.gallery;
-      newGallery.splice(action.payload.index, 0, { text: '' });
-      return {
-        ...state,
-        gallery: newGallery,
-      };
-    }
-    case 'EDIT_TEXTBOX': {
-      //payload: {newText: string, index: number}
-      let newGallery = state.gallery.map((item, index) => {
-        if (action.payload.index == index)
-          return {
-            ...item,
-            text: action.payload.newText,
-          };
-        return item;
-      });
 
+    case 'EDIT_TYPE': {
+      let newGallery = state.gallery.map((img) => {
+        if (img.url === action.payload.url) {
+          return {
+            ...img,
+            type: action.payload.newType,
+          };
+        }
+        return img;
+      });
+      
       return {
         ...state,
         gallery: newGallery,
-      };
+      }
     }
-    case 'DELETE_TEXTBOX': {
-      //payload: {index: number}
-      let newGallery = state.gallery;
-      newGallery.splice(action.payload.index, 1);
-      return {
-        ...state,
-        gallery: newGallery,
-      };
-    }
+
     default: {
       return state;
     }
