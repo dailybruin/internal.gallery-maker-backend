@@ -151,7 +151,6 @@ function TextBox(props) {
       <div>
         <Form.Item label="Textbox">
           <TextArea
-            maxLength={MAX_CAPTION_LEN}
             showCount
             value={text}
             onChange={(e) => updateStateAndReduxText(e.target.value)}
