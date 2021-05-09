@@ -4,6 +4,7 @@ import './SelectImages.css'
 import { useSelector, useDispatch } from 'react-redux'
 import { Pagination, notification, Spin } from "antd";
 import { CloseCircleTwoTone } from '@ant-design/icons';
+import {galleryOptions} from "../../constants/galleryLayouts"
 
 const DEFAULT_PER_PAGE = 50;
 
@@ -69,6 +70,8 @@ const make_reducer = (reduxGallery) =>
 
 function SelectImages(props) {
     const reduxGallery = useSelector(state => state.editGallery.gallery);
+    const reduxLayout = useSelector(state => state.editGallery.layout); // when adding image, give them default type for the coresponding layout
+
     const reduxDispatch = useDispatch();
     const [state, dispatch] = useReducer(make_reducer(reduxGallery), initialState);
 
@@ -116,6 +119,7 @@ function SelectImages(props) {
                     url: clickedImg.sourceURL,
                     caption: "",
                     credits: "",
+                    type: galleryOptions[reduxLayout][0] // pick first as default
                 }]
             });
         }
