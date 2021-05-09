@@ -34,7 +34,7 @@ def base_page(request):
 	#Get soup object
 	soup = get_soup()
 	#Insert a meta tag
-	insert_meta_tag(soup, "og:title", "dailybruin1")
+	# insert_meta_tag(soup, "og:title", "dailybruin1")
 	#Return soup object
 	return HttpResponse(soup.prettify())
 
