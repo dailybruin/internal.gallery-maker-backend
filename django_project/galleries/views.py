@@ -15,7 +15,20 @@ from django.contrib.auth.decorators import login_required
 
 
 
+
+
+
 from rest_framework_swagger.views import get_swagger_view
+from rest_framework.decorators import api_view, permission_classes, schema
+
+import coreapi, coreschema
+
+from rest_framework.schemas import AutoSchema, ManualSchema
+
+custom_schema = AutoSchema(manual_fields=[
+    coreapi.Field("username", required=True, location="form", type="string", description="username here"),
+    coreapi.Field("password", required=True, location="form", type="string", description="password field")
+])
 
 schema_view = get_swagger_view(title='Pastebin API')
 
@@ -38,6 +51,7 @@ class GalleryRetrieve(generics.RetrieveAPIView):
 @api_view(["POST"])
 @login_required
 @transaction.atomic
+@schema(custom_schema)
 def create_or_update_gallery(request):
     data = request.data.copy()
     id_exists = data.get("id", None)

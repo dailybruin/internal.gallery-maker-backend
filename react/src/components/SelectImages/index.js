@@ -2,7 +2,7 @@ import React, { useState, useEffect, useReducer } from 'react'
 import axios from 'axios'
 import './SelectImages.css'
 import { useSelector, useDispatch } from 'react-redux'
-import { Pagination, notification, Spin } from "antd";
+import { Pagination, notification } from "antd";
 import { CloseCircleTwoTone } from '@ant-design/icons';
 
 const DEFAULT_PER_PAGE = 50;
@@ -75,19 +75,15 @@ function SelectImages(props) {
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(DEFAULT_PER_PAGE);
     const [totalItems, setTotalItems] = useState(0);
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        setLoading(true);
         const timestamp = Date.now();
         axios.get(`https://wp.dailybruin.com/wp-json/wp/v2/media?page=${page}&per_page=${pageSize}&orderby=date&to_prevent_caching=${timestamp}`)
             .then(res => {
                 dispatch({ type: 'updatePage', payload: res.data });
                 setTotalItems(res.headers["x-wp-total"]);
-                setLoading(false);
             })
             .catch(err => {
-                setLoading(false);
                 notification.error({
                     message: "Failed to retrieve images from WordPress.",
                     description: `${err.message}`,
@@ -144,12 +140,8 @@ function SelectImages(props) {
                     <h3>
                         Select images to put in the gallery (don't worry about order now; you can reorder them later!)
                     </h3>
-                    {loading ?
-                        <div className='loading-vertical-align'>
-                            <Spin size='large' style={{height: '50%'}}/>
-                        </div> 
-                        :
-                         state.imageData.map(img => 
+                    {
+                        state.imageData.map(img => 
                             <img src={img.sourceURL} 
                                 alt=""
                                 className={img.selected ? "img-selected" : ""}

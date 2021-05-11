@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { PageHeader } from 'antd';
 
 import { MAX_NAME_LEN, MAX_DESCR_LEN } from "constants/formInput"
-import { galleryOptions, readableNames } from 'constants/galleryLayouts';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -72,7 +71,6 @@ function GalleryBasicInfo() {
 		    onFieldsChange={(_, allFields) => {
 		    	setReduxFromFields(allFields)
 		    }}
-			initialValues={{layout: "alt"}}
 	    	>
 	      <Form.Item name="name" label="Name" rules={[{ required: true }]}>
 	        <Input maxLength={MAX_NAME_LEN} />
@@ -81,12 +79,10 @@ function GalleryBasicInfo() {
 	        <TextArea maxLength={MAX_DESCR_LEN} showCount />
 	      </Form.Item>
 	      <Form.Item name="layout" label="Layout Style" rules={[{ required: true }]}>
-	        <Select>
-				{
-					Object.keys(galleryOptions).map(type =>
-						<Option value={type} key={type}>{readableNames[type]}</Option>
-					)
-				}
+	        <Select
+	          defaultValue="alt"
+	        >
+	          <Option value="alt">Alternating</Option>
 	        </Select>
 	      </Form.Item>
 	      
