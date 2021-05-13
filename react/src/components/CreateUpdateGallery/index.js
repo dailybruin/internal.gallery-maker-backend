@@ -23,16 +23,22 @@ function CreateUpdateGallery(props) {
     const reduxStore = useStore();
     const unsubscribe = useRef(null);
 
+    const reduxUnsubscribeSafely = () => {
+        if (typeof unsubscribe.current === 'function') {
+            unsubscribe.current();
+        }
+    }
+
     useEffect(() => {
         const reduxSubscribe = () => {
             unsubscribe.current = reduxStore.subscribe(() => {
                 setDirty(true);
-                unsubscribe.current();
+                reduxUnsubscribeSafely();
             })
         }
 
         const reduxUnsubscribe = () => 
-            () => unsubscribe.current()
+            () => reduxUnsubscribeSafely()
 
         if (props.match.path === '/update/:id') {
             axios.get(`${API_ROOT}/gallery/${props.match.params.id}`)
@@ -100,6 +106,7 @@ function CreateUpdateGallery(props) {
 
     const handleSubmit = () => {
         setDirty(false);
+        reduxUnsubscribeSafely();
     }
 
     const submitbutton = props.match.path === '/update/:id' ? 
