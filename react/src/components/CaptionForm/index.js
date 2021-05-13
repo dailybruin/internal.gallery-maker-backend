@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { Form, Input, Select } from 'antd';
+import { Form, Select } from 'antd';
 import { useSelector, useDispatch } from 'react-redux'
 import "./caption.css"
 import { MAX_CAPTION_LEN, MAX_CREDIT_LEN } from "constants/formInput"
 import { galleryOptions, readableNames } from 'constants/galleryLayouts';
-
-const { TextArea } = Input
+import TextBoxWithPreview from '../TextBoxWithPreview';
 
 // helper component
 function CaptionImagePair(props){
@@ -73,23 +72,19 @@ function CaptionImagePair(props){
    return (
     <div className="image-caption-row">
         <img className="caption-image" src={props.img_url}/>
-        <div>
-            <Form.Item label="Caption">
-                <TextArea
-                    maxLength={MAX_CAPTION_LEN}
-                    showCount
-                    value={caption}
-                    onChange={e => updateStateAndReduxCaption(e.target.value)}
-                />
-            </Form.Item>
-            <Form.Item label="Credit">
-                <TextArea
-                    maxLength={MAX_CREDIT_LEN}
-                    showCount
-                    value={credit}
-                    onChange={e => updateStateAndReduxCredit(e.target.value)}
-                />
-            </Form.Item>
+        <div className="forms">
+            <TextBoxWithPreview
+                label="Caption"
+                maxLength={MAX_CAPTION_LEN}
+                value={caption}
+                onChange={updateStateAndReduxCaption}
+            />
+            <TextBoxWithPreview
+                label="Credit"
+                maxLength={MAX_CREDIT_LEN}
+                value={credit}
+                onChange={updateStateAndReduxCredit}
+            />
             <Form.Item label="Type">
                 <Select
                     value={type}
