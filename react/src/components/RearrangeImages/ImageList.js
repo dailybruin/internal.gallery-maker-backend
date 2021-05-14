@@ -26,7 +26,7 @@ const Image = ({ image, index, moveImage }) => {
   });
 
   const [{ isDragging }, drag] = useDrag({
-    item: { type, id: image.url, index },
+    item: { type, id: image.url ? image.url : image.id, index },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -41,21 +41,33 @@ const Image = ({ image, index, moveImage }) => {
       style={{ opacity: isDragging ? 0 : 1 }}
       className="file-item"
     >
-      <img alt={`img - ${image.url}`} src={image.url} className="file-img" />
+      {image.url ? (
+        <img alt={`img - ${image.url}`} src={image.url} className="file-img" />
+      ) : (
+        <div>
+          <p>{image.content}</p>
+        </div>
+      )}
     </div>
   );
 };
 
 const ImageList = ({ images, moveImage }) => {
-  const renderImage = (image, index) => {
-    return (
-      <Image
-        image={image}
-        index={index}
-        key={`${image.url}-image`}
-        moveImage={moveImage}
-      />
-    );
+  const renderImage = (item, index) => {
+    if (item.metatype == 'image') {
+      return (
+        <Image
+          image={item}
+          index={index}
+          key={`${item.url}-image`}
+          moveImage={moveImage}
+        />
+      );
+    } else if (item.metatype == 'text') {
+      return (
+        <Image image={item} index={index} key={item.id} moveImage={moveImage} />
+      );
+    }
   };
 
   return <section className="file-list">{images.map(renderImage)}</section>;

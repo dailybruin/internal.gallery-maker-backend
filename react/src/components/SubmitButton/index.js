@@ -25,7 +25,7 @@ const SubmitButton = (props) => {
     props.onSubmit();
     const successCallback = () => {
       dispatch({
-        type: 'RESET_GALLERY',
+        type: 'DELETE_GALLERY',
       });
       history.push('/');
     };
@@ -60,7 +60,11 @@ const SubmitButton = (props) => {
     //   } else openNotification();
     // });
   };
-  return <Button type="primary" onClick={() => submitGallery()}>Submit</Button>;
+  return (
+    <Button type="primary" onClick={() => submitGallery()}>
+      Submit
+    </Button>
+  );
 };
 
 export default SubmitButton;

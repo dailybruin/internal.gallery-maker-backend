@@ -9,9 +9,16 @@ const initialState = {
 /*
     gallery: 
       [
+        metatype: 'image';
         url: string;
         caption: string;
-      ]; // i think?
+      ] // i think?
+      || 
+      [
+        metatype: 'text';
+        content: string;
+        id: string;
+      ];
       name: string;
       layout: string;
       description: string;
@@ -37,9 +44,6 @@ const editGallery = (state = initialState, action) => {
         gallery: newGallery,
       };
     }
-    case 'RESET_GALLERY': {
-      return initialState;
-    }
     case 'EDIT_DESCRIPTION': {
       return {
         ...state,
@@ -55,8 +59,8 @@ const editGallery = (state = initialState, action) => {
     case 'EDIT_LAYOUT': {
       let newGallery = state.gallery.map((img) => ({
         ...img,
-        type: galleryOptions[action.payload][0]
-      }))
+        type: galleryOptions[action.payload][0],
+      }));
       return {
         ...state,
         gallery: newGallery,
@@ -96,6 +100,65 @@ const editGallery = (state = initialState, action) => {
         gallery: newGallery,
       };
     }
+    case 'CREATE_TEXTBOX': {
+      //payload: {index: number, location: string}
+      let newGallery = state.gallery;
+      let previousIndex;
+      if (action.payload.location == 'first') previousIndex = 0; // Workaround for the first textbox
+      let i = 1;
+      if (typeof previousIndex === 'undefined') {
+        for (let item of state.gallery) {
+          if (item.metatype == 'image' && item.url == action.payload.location) {
+            previousIndex = i;
+            break;
+          } else if (
+            item.metatype == 'text' &&
+            item.id == action.payload.location
+          ) {
+            previousIndex = i;
+            break;
+          } else i++;
+        }
+      }
+      if (typeof previousIndex === 'undefined') return state;
+      newGallery.splice(previousIndex, 0, {
+        metatype: 'text',
+        content: '',
+        id: action.payload.id,
+      });
+      return {
+        ...state,
+        gallery: newGallery,
+      };
+    }
+    case 'EDIT_TEXTBOX': {
+      //payload: {newText: string, id: string}
+      let newGallery = state.gallery.map((item, index) => {
+        if (action.payload.id == item.id)
+          return {
+            ...item,
+            content: action.payload.newText,
+          };
+        return item;
+      });
+
+      return {
+        ...state,
+        gallery: newGallery,
+      };
+    }
+    case 'DELETE_TEXTBOX': {
+      //payload: {id: string}
+      let newGallery = state.gallery.filter(
+        (item) => item.id != action.payload.id
+      );
+      // newGallery.splice(action.payload.index, 1);
+      console.log('redux newGallery (new state after delete)', newGallery);
+      return {
+        ...state,
+        gallery: newGallery,
+      };
+    }
 
     case 'EDIT_TYPE': {
       let newGallery = state.gallery.map((img) => {
@@ -107,11 +170,11 @@ const editGallery = (state = initialState, action) => {
         }
         return img;
       });
-      
+
       return {
         ...state,
         gallery: newGallery,
-      }
+      };
     }
 
     default: {

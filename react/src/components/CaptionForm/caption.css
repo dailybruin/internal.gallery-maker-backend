@@ -1,16 +1,16 @@
-
 .image-caption-row {
-	height: 300px;
-	margin-bottom: 20px;
-	display: flex;
-	flex-direction: horizontal;
+  height: 300px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: horizontal;
 }
 
-.caption-image{
-	height: 100%;
-	margin-right: 10px;
+.caption-image {
+  height: 100%;
+  margin-right: 10px;
 }
 
+<<<<<<< HEAD
 .caption-container{
 	margin: 0 5%;
 }
@@ -18,3 +18,22 @@
 .forms {
 	width: 100%;
 }
+=======
+.caption-container {
+  margin-left: 5%;
+}
+.textbox-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.item-container {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+/* .delete-textbox-button {
+  align-items: start;
+} */
+.add-text-button {
+  margin: 10px;
+}
+>>>>>>> 55d165c179ac1681aa1d924ae89ec68d219862f6
