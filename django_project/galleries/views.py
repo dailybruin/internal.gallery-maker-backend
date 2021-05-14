@@ -18,12 +18,12 @@ class GalleryViewSet(viewsets.ModelViewSet):
     queryset = Gallery.objects.all()
     serializer_class = GallerySerializer
     pagination_class = GalleryPagination
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
 class ImageViewSet(viewsets.ModelViewSet):
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
 class GalleryRetrieve(generics.RetrieveAPIView):
     queryset = Gallery.objects.all()
