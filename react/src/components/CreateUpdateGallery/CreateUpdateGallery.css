@@ -1,15 +1,18 @@
 .steps-nav-container {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: white;
-    padding: 0.5rem 0;
-    display: flex;
-    justify-content: space-around;
-    border-top: 1px solid #1890ff;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: white;
+  padding: 0.5rem 0;
+  display: flex;
+  justify-content: space-around;
+  border-top: 1px solid #1890ff;
 }
 
 .steps {
-    padding-bottom: 0.5rem;
-    width: 70%;
+  padding-bottom: 0.5rem;
+  width: 70%;
+}
+.page-container {
+  padding-bottom: 57px;
 }
