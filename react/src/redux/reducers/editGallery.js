@@ -57,6 +57,9 @@ const editGallery = (state = initialState, action) => {
       };
     }
     case 'EDIT_LAYOUT': {
+      
+      if (state.layout === action.payload)
+        return state 
       let newGallery = state.gallery.map((img) => ({
         ...img,
         type: galleryOptions[action.payload][0],

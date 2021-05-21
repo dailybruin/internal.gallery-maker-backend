@@ -201,6 +201,7 @@ function CaptionsForm() {
   // const gallery = useSelector(selectorForGallery);
   const gallery = useSelector(selectorForGallery, equalityCheck);
   const galleryLayout = useSelector((state) => state.editGallery.layout);
+
   return (
     <div classname="caption-container">
       <h2> captions and credits </h2>
