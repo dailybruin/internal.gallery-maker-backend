@@ -9,10 +9,10 @@ import { API_ROOT } from '../constants/api';
 import { LoginWrapper } from '../components/LoginWrapper';
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {
-    // getAuthentication();
+    getAuthentication();
   });
   const getAuthentication = async () => {
     let response = await fetch(`${API_ROOT}/oauth/get_logged_in`);
@@ -39,7 +39,7 @@ function App() {
         {/* <Route path="/create" component={CreateUpdateGallery} />
         <Route path="/update/:id" component={CreateUpdateGallery} />
         <Route path="/rearrange" component={RearrangeImages} /> */}
-        {/* <Route path="/signup" component={Signup} /> */}
+        <Route path="/signup" component={Signup} />
         <LoginWrapper
           path="/create"
           component={CreateUpdateGallery}

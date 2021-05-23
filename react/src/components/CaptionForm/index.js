@@ -1,21 +1,12 @@
 import React, { useState } from 'react';
-<<<<<<< HEAD
-import { Form, Select } from 'antd';
-import { useSelector, useDispatch } from 'react-redux'
-import "./caption.css"
-import { MAX_CAPTION_LEN, MAX_CREDIT_LEN } from "constants/formInput"
-import { galleryOptions, readableNames } from 'constants/galleryLayouts';
-import TextBoxWithPreview from '../TextBoxWithPreview';
-=======
-
 import { Select, Button, Form, Input } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import './caption.css';
 import { MAX_CAPTION_LEN, MAX_CREDIT_LEN } from 'constants/formInput';
 import { v4 as uuidv4 } from 'uuid';
 import { galleryOptions, readableNames } from 'constants/galleryLayouts';
+import TextBoxWithPreview from '../TextBoxWithPreview';
 const { TextArea } = Input;
->>>>>>> 55d165c179ac1681aa1d924ae89ec68d219862f6
 
 // helper component
 function CaptionImagePair(props) {
@@ -47,54 +38,6 @@ function CaptionImagePair(props) {
   function updateStateAndReduxCaption(value) {
     setCaption(value);
     dispatch({
-<<<<<<< HEAD
-        type: "EDIT_CREDIT",
-        payload: {
-            url: props.img_url,
-            newCredit: value
-        }
-    })
-   }
-
-   function updateStateAndReduxType(value) {
-       setType(value);
-       dispatch({
-           type: "EDIT_TYPE",
-           payload: {
-               url: props.img_url,
-               newType: value
-           }
-       });
-   }
-
-   return (
-    <div className="image-caption-row">
-        <img className="caption-image" src={props.img_url}/>
-        <div className="forms">
-            <TextBoxWithPreview
-                label="Caption"
-                maxLength={MAX_CAPTION_LEN}
-                value={caption}
-                onChange={updateStateAndReduxCaption}
-            />
-            <TextBoxWithPreview
-                label="Credit"
-                maxLength={MAX_CREDIT_LEN}
-                value={credit}
-                onChange={updateStateAndReduxCredit}
-            />
-            <Form.Item label="Type">
-                <Select
-                    value={type}
-                    onChange={updateStateAndReduxType}>
-                    {
-                        props.imageTypes.map(type => 
-                            <Select.Option value={type} key={type}>{readableNames[type]}</Select.Option>
-                        )
-                    }
-                </Select>
-            </Form.Item>
-=======
       type: 'EDIT_CAPTION',
       payload: {
         url: props.img_url,
@@ -155,7 +98,6 @@ function CaptionImagePair(props) {
               ))}
             </Select>
           </Form.Item>
->>>>>>> 55d165c179ac1681aa1d924ae89ec68d219862f6
         </div>
       </div>
       <AddTextBoxButton id={props.img_url} />
@@ -207,14 +149,12 @@ function TextBox(props) {
   return (
     <div className="textbox-container">
       <div>
-        <Form.Item label="Textbox">
-          <TextArea
-            maxLength={MAX_CAPTION_LEN}
-            showCount
-            value={text}
-            onChange={(e) => updateStateAndReduxText(e.target.value)}
-          />
-        </Form.Item>
+        <TextBoxWithPreview
+          label="Textbox"
+          maxLength={MAX_CAPTION_LEN}
+          value={text}
+          onChange={updateStateAndReduxText}
+        />
       </div>
       <div className="delete-textbox-button">
         <Button onClick={deleteTextbox}>Delete Textbox</Button>
@@ -260,7 +200,7 @@ function CaptionsForm() {
   const gallery = useSelector(selectorForGallery, equalityCheck);
   const galleryLayout = useSelector((state) => state.editGallery.layout);
   return (
-    <div classname="caption-container">
+    <div className="caption-container">
       <h2> captions and credits </h2>
       <AddTextBoxButton id="first" />
       {gallery.map((item, index) => {

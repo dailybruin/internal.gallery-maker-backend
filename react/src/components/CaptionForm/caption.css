@@ -10,17 +10,8 @@
   margin-right: 10px;
 }
 
-<<<<<<< HEAD
-.caption-container{
-	margin: 0 5%;
-}
-
-.forms {
-	width: 100%;
-}
-=======
 .caption-container {
-  margin-left: 5%;
+  margin: 0 5%;
 }
 .textbox-container {
   margin-top: 20px;
@@ -36,4 +27,3 @@
 .add-text-button {
   margin: 10px;
 }
->>>>>>> 55d165c179ac1681aa1d924ae89ec68d219862f6

@@ -154,7 +154,7 @@ function SelectImages(props) {
 
   return (
     <div>
-      <div className="columns">
+      <div className="select-images-columns">
         <div className="img-grid">
           <h3>
             Select images to put in the gallery (don't worry about order now;
