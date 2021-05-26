@@ -20,7 +20,6 @@ function GalleryBasicInfo() {
   const dispatch = useDispatch(); // for changing state
   const data = useSelector((state) => state.editGallery);
  
-  console.log(data)
 
   const fieldsFromRedux = (data) => {
   	const fields_in_form = ["name", "description", "layout"]

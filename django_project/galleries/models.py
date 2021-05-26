@@ -33,9 +33,9 @@ class Image(models.Model):
     # image url
     img_url = models.URLField(max_length=200)
     # desc of img
-    description = models.TextField(max_length=300, blank=True)
+    description = models.TextField(max_length=1000, blank=True)
     # photo creds
-    credits = models.TextField(max_length=50, blank=True)
+    credits = models.TextField(max_length=100, blank=True)
 
     # NOTE: this index specifies ordering and is shared with GalleryTextField.index
     # For example, for the following gallery: [ Image1, Text1, Image2],

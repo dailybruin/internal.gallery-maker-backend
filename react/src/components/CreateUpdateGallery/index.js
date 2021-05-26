@@ -54,6 +54,7 @@ function CreateUpdateGallery(props) {
               };
             }
           });
+          
           reduxDispatch({
             type: 'EDIT_GALLERY',
             payload: [...reduxGallery],
