@@ -107,16 +107,19 @@ function CaptionImagePair(props) {
 
 const selectorForGallery = (state) => state.editGallery.gallery;
 const equalityCheck = (newState, state) => {
-  // console.log("old state")
-  // console.log(state);
-  console.log('new state');
-  console.log(newState);
+  console.log('old state', state);
+  console.log('new state', newState);
+  //console.log('new try', gallery);
 
-  // if (state.length != newState.length) return false;
-  // for (let i = 0; i < state.length; i++) {
-  // if (state[i].url != newState[i].url) return false;
-  // }
-  return false;
+  if (state.length !== newState.length) return false;
+  for (let i = 0; i < state.length; i++) {
+    if (state[i].metatype === newState[i].metatype) {
+      if (state[i].metatype === 'image') {
+        if (state[i].url !== newState[i].url) return false;
+      }
+    } else return false;
+  }
+  return true;
 };
 
 function TextBox(props) {
@@ -151,7 +154,6 @@ function TextBox(props) {
       <div>
         <Form.Item label="Textbox">
           <TextArea
-            maxLength={MAX_CAPTION_LEN}
             showCount
             value={text}
             onChange={(e) => updateStateAndReduxText(e.target.value)}

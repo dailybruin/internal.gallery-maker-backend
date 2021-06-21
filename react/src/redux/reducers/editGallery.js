@@ -105,18 +105,22 @@ const editGallery = (state = initialState, action) => {
     }
     case 'CREATE_TEXTBOX': {
       //payload: {index: number, location: string}
-      let newGallery = state.gallery;
+      let newGallery = [...state.gallery];
+      console.log('new gallery', newGallery);
       let previousIndex;
-      if (action.payload.location == 'first') previousIndex = 0; // Workaround for the first textbox
+      if (action.payload.location === 'first') previousIndex = 0; // Workaround for the first textbox
       let i = 1;
       if (typeof previousIndex === 'undefined') {
         for (let item of state.gallery) {
-          if (item.metatype == 'image' && item.url == action.payload.location) {
+          if (
+            item.metatype === 'image' &&
+            item.url === action.payload.location
+          ) {
             previousIndex = i;
             break;
           } else if (
-            item.metatype == 'text' &&
-            item.id == action.payload.location
+            item.metatype === 'text' &&
+            item.id === action.payload.location
           ) {
             previousIndex = i;
             break;
