@@ -23,15 +23,21 @@ function CreateUpdateGallery(props) {
   const reduxStore = useStore();
   const unsubscribe = useRef(null);
 
+  const reduxUnsubscribeSafely = () => {
+      if (typeof unsubscribe.current === 'function') {
+          unsubscribe.current();
+      }
+  }
+
   useEffect(() => {
     const reduxSubscribe = () => {
-      unsubscribe.current = reduxStore.subscribe(() => {
-        setDirty(true);
-        unsubscribe.current();
-      });
-    };
+        unsubscribe.current = reduxStore.subscribe(() => {
+            setDirty(true);
+            reduxUnsubscribeSafely();
+        })
+    }
 
-    const reduxUnsubscribe = () => () => unsubscribe.current();
+    const reduxUnsubscribe = () => () => reduxUnsubscribeSafely()
 
     if (props.match.path === '/update/:id') {
       axios
@@ -75,7 +81,7 @@ function CreateUpdateGallery(props) {
         .then(() => reduxSubscribe())
         .catch((err) => {
           notification.error({
-            message: 'Failed to retrieve galleries from server.',
+            message: 'Failed to retrieve gallery from server.',
             description: `${err.message}`,
             duration: 0,
           });
@@ -112,7 +118,8 @@ function CreateUpdateGallery(props) {
 
   const handleSubmit = () => {
     setDirty(false);
-  };
+    reduxUnsubscribeSafely();
+  }
 
   const submitbutton =
     props.match.path === '/update/:id' ? (

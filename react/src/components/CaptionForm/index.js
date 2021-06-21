@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-
 import { Select, Button, Form, Input } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import './caption.css';
 import { MAX_CAPTION_LEN, MAX_CREDIT_LEN } from 'constants/formInput';
 import { v4 as uuidv4 } from 'uuid';
 import { galleryOptions, readableNames } from 'constants/galleryLayouts';
+import TextBoxWithPreview from '../TextBoxWithPreview';
 const { TextArea } = Input;
 
 // helper component
@@ -149,14 +149,12 @@ function TextBox(props) {
   return (
     <div className="textbox-container">
       <div>
-        <Form.Item label="Textbox">
-          <TextArea
-            maxLength={MAX_CAPTION_LEN}
-            showCount
-            value={text}
-            onChange={(e) => updateStateAndReduxText(e.target.value)}
-          />
-        </Form.Item>
+        <TextBoxWithPreview
+          label="Textbox"
+          maxLength={MAX_CAPTION_LEN}
+          value={text}
+          onChange={updateStateAndReduxText}
+        />
       </div>
       <div className="delete-textbox-button">
         <Button onClick={deleteTextbox}>Delete Textbox</Button>
@@ -203,7 +201,7 @@ function CaptionsForm() {
   const galleryLayout = useSelector((state) => state.editGallery.layout);
 
   return (
-    <div classname="caption-container">
+    <div className="caption-container">
       <h2> captions and credits </h2>
       <AddTextBoxButton id="first" />
       {gallery.map((item, index) => {

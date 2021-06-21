@@ -1,0 +1,12 @@
+.textbox-preview-columns {
+    display: flex;
+    margin-bottom: 1em;
+}
+
+.preview-label {
+    display: inline-flex;
+    height: 32px;
+    align-items: center;
+    margin-right: 8px;
+    flex-grow: 0;
+}
